@@ -6,9 +6,13 @@
   --font: 'Inter', system-ui, sans-serif; --display: 'Space Grotesk', sans-serif;
 }
 * { box-sizing: border-box; margin: 0; }
-body { width: 340px; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 13px; padding: 14px; }
-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-.brand { font-family: var(--display); font-weight: 700; font-size: 17px; display: flex; align-items: center; gap: 8px; letter-spacing: -0.3px; }
+body { width: 600px; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 13px; padding: 11px 14px; }
+header { display: flex; align-items: center; gap: 14px; margin-bottom: 9px; }
+.brand { flex-shrink: 0; font-family: var(--display); font-weight: 700; font-size: 17px; display: flex; align-items: center; gap: 8px; letter-spacing: -0.3px; }
+.cols { display: flex; gap: 12px; align-items: stretch; }
+.col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+.cols .group, .cols .eq, .cols .custom { margin-bottom: 0; }
+.col .group { flex: 1; }
 .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--grad); box-shadow: 0 0 12px rgba(139,92,246,0.8); }
 
 /* toggle switch */
@@ -19,12 +23,16 @@ header { display: flex; align-items: center; justify-content: space-between; mar
 .switch input:checked + .track { background: var(--grad); border-color: transparent; }
 .switch input:checked + .track::before { transform: translateX(18px); background: #fff; }
 
-.status { display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--dim); margin-bottom: 10px; }
+.status { display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--dim); margin-right: auto; }
 .status .sdot { width: 8px; height: 8px; border-radius: 50%; background: var(--dim); flex-shrink: 0; }
 .status.ok .sdot { background: #34d399; box-shadow: 0 0 8px rgba(52,211,153,.7); }
 .status.warn .sdot { background: #fbbf24; }
 .status.bad .sdot { background: #f87171; }
-#viz { width: 100%; height: 44px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 12px; display: block; }
+.viz-wrap { position: relative; cursor: pointer; margin-bottom: 12px; }
+.viz-wrap:hover { filter: brightness(1.15); }
+#viz { width: 100%; height: 46px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; display: block; }
+.viz-wrap:hover #viz { border-color: var(--accent); }
+.viz-exp { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 10px; letter-spacing: .5px; color: var(--dim); pointer-events: none; background: rgba(10,11,15,0.55); padding: 2px 7px; border-radius: 10px; }
 .custom { margin-bottom: 12px; }
 .custom-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
 .custom-chips:empty { display: none; }

@@ -48,7 +48,7 @@
     const dry = ctx.createGain(); dry.gain.value = 1;
     const wet = ctx.createGain(); wet.gain.value = 0;
     const comp = ctx.createDynamicsCompressor();
-    const analyser = ctx.createAnalyser(); analyser.fftSize = 256; analyser.smoothingTimeConstant = 0.8;
+    const analyser = ctx.createAnalyser(); analyser.fftSize = 1024; analyser.smoothingTimeConstant = 0.8;
 
     src.connect(preamp); preamp.connect(bass); bass.connect(bands[0]);
     for (let i = 0; i < bands.length - 1; i++) bands[i].connect(bands[i + 1]);
@@ -114,6 +114,11 @@
       const el = document.querySelector('video, audio');
       reply({ hostname: HOST, hasMedia: !!el, playing: !!(el && !el.paused), active: !!graph });
       return true;
+    }
+    if (msg && msg.type === 'visualizer') {
+      ensureGraph();
+      try { window.EqualifyViz.open(() => (graph && graph.analyser) || null); } catch (e) {}
+      if (reply) reply({ ok: true });
     }
   });
   // visualizer stream while popup is open

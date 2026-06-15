@@ -18,6 +18,7 @@ const SLIDERS = { volume: '%', preamp: ' dB', bass: ' dB', treble: ' dB', reverb
 let store = { sites: {}, custom: [] };
 let host = 'default';
 let s = { ...DEFAULTS };
+let activeTabId = null;
 
 function persist() { store.sites[host] = s; chrome.storage.local.set({ store }); }
 
@@ -73,7 +74,10 @@ $('preset-save').addEventListener('click', () => {
 });
 $('preset-name').addEventListener('keydown', e => { if (e.key === 'Enter') $('preset-save').click(); });
 
-// visualizer
+// open full-screen visualizer in the page
+$('viz-open').addEventListener('click', () => { if (activeTabId != null) chrome.tabs.sendMessage(activeTabId, { type: 'visualizer' }); });
+
+// mini visualizer
 function drawViz(bars) {
   const c = $('viz'), ctx = c.getContext('2d'), W = c.width, H = c.height; ctx.clearRect(0, 0, W, H);
   const grad = ctx.createLinearGradient(0, 0, W, 0); grad.addColorStop(0, '#6366f1'); grad.addColorStop(.5, '#8b5cf6'); grad.addColorStop(1, '#22d3ee');
@@ -86,7 +90,7 @@ function setStatus(kind, text) { const el = $('status'); el.className = 'status 
 // init
 buildEq();
 chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-  const tab = tabs[0];
+  const tab = tabs[0]; if (tab) activeTabId = tab.id;
   chrome.storage.local.get('store', d => {
     store = { sites: {}, custom: [], ...(d.store || {}) };
     const finish = () => { s = { ...DEFAULTS, ...(store.sites[host] || {}) }; render(); renderCustom(); };

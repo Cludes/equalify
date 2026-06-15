@@ -7,11 +7,14 @@
 <body>
   <header>
     <div class="brand"><span class="dot"></span> Equalify</div>
+    <div class="status" id="status"><span class="sdot"></span><span id="status-text">Checking this tab…</span></div>
     <label class="switch"><input type="checkbox" id="enabled" checked /><span class="track"></span></label>
   </header>
 
-  <div class="status" id="status"><span class="sdot"></span><span id="status-text">Checking this tab…</span></div>
-  <canvas id="viz" width="312" height="44"></canvas>
+  <div class="viz-wrap" id="viz-open" title="Open the full-screen visualizer">
+    <canvas id="viz" width="576" height="46"></canvas>
+    <span class="viz-exp">Click to expand</span>
+  </div>
 
   <div class="presets">
     <button class="preset" data-preset="flat">Flat</button>
@@ -22,28 +25,29 @@
     <button class="preset" data-preset="eightd">8D</button>
   </div>
 
-  <div class="custom">
-    <div class="custom-chips" id="custom-chips"></div>
-    <div class="custom-save"><input id="preset-name" placeholder="Save current as…" maxlength="18" /><button id="preset-save">Save</button></div>
-  </div>
+  <div class="cols">
+    <div class="col">
+      <div class="custom">
+        <div class="custom-chips" id="custom-chips"></div>
+        <div class="custom-save"><input id="preset-name" placeholder="Save current as…" maxlength="18" /><button id="preset-save">Save</button></div>
+      </div>
+      <div class="group">
+        <div class="ctrl"><label>Volume <b id="v-volume">100%</b></label><input type="range" id="volume" min="0" max="600" value="100" data-def="100" /></div>
+        <div class="ctrl"><label>Preamp <b id="v-preamp">0 dB</b></label><input type="range" id="preamp" min="-12" max="12" step="0.5" value="0" data-def="0" /></div>
+        <div class="ctrl"><label>Bass <b id="v-bass">0 dB</b></label><input type="range" id="bass" min="-15" max="15" step="0.5" value="0" data-def="0" /></div>
+        <div class="ctrl"><label>Treble <b id="v-treble">0 dB</b></label><input type="range" id="treble" min="-15" max="15" step="0.5" value="0" data-def="0" /></div>
+      </div>
+    </div>
 
-  <div class="group">
-    <div class="ctrl"><label>Volume <b id="v-volume">100%</b></label><input type="range" id="volume" min="0" max="600" value="100" data-def="100" /></div>
-    <div class="ctrl"><label>Preamp <b id="v-preamp">0 dB</b></label><input type="range" id="preamp" min="-12" max="12" step="0.5" value="0" data-def="0" /></div>
-    <div class="ctrl"><label>Bass <b id="v-bass">0 dB</b></label><input type="range" id="bass" min="-15" max="15" step="0.5" value="0" data-def="0" /></div>
-    <div class="ctrl"><label>Treble <b id="v-treble">0 dB</b></label><input type="range" id="treble" min="-15" max="15" step="0.5" value="0" data-def="0" /></div>
-  </div>
-
-  <div class="eq" id="eq"></div>
-
-  <div class="group">
-    <div class="ctrl"><label>Reverb <b id="v-reverb">0%</b></label><input type="range" id="reverb" min="0" max="100" value="0" data-def="0" /></div>
-    <div class="ctrl"><label>Stereo width <b id="v-width">100%</b></label><input type="range" id="width" min="0" max="200" value="100" data-def="100" /></div>
-    <div class="ctrl"><label>Speed <b id="v-speed">100%</b></label><input type="range" id="speed" min="50" max="150" value="100" data-def="100" /></div>
-    <div class="ctrl"><label class="chk"><input type="checkbox" id="preservePitch" /> Keep pitch when changing speed</label></div>
-    <div class="ctrl row8d">
-      <label class="chk"><input type="checkbox" id="eightD" /> 8D rotation</label>
-      <input type="range" id="eightDSpeed" min="0.04" max="0.5" step="0.01" value="0.12" />
+    <div class="col">
+      <div class="eq" id="eq"></div>
+      <div class="group">
+        <div class="ctrl"><label>Reverb <b id="v-reverb">0%</b></label><input type="range" id="reverb" min="0" max="100" value="0" data-def="0" /></div>
+        <div class="ctrl"><label>Stereo width <b id="v-width">100%</b></label><input type="range" id="width" min="0" max="200" value="100" data-def="100" /></div>
+        <div class="ctrl"><label>Speed <b id="v-speed">100%</b></label><input type="range" id="speed" min="50" max="150" value="100" data-def="100" /></div>
+        <div class="ctrl"><label class="chk"><input type="checkbox" id="preservePitch" /> Keep pitch when changing speed</label></div>
+        <div class="ctrl row8d"><label class="chk"><input type="checkbox" id="eightD" /> 8D rotation</label><input type="range" id="eightDSpeed" min="0.04" max="0.5" step="0.01" value="0.12" /></div>
+      </div>
     </div>
   </div>
 

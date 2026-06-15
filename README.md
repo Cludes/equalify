@@ -18,6 +18,7 @@ A Manifest V3 Chrome extension that adds a real-time equalizer, bass boost, reve
 - One-click presets: Flat, Bass boost, Slowed + reverb, Nightcore, Lo-fi, 8D
 - **Save your own custom presets**
 - **Per-site memory** - settings are remembered separately for each site
+- **Full-screen visualizer** (old-school Winamp style) - click the mini visualizer to launch it; reactive Spectrum bars, Radial, Waveform and Particle modes with neon glow. M = cycle mode, F = fullscreen, Esc = close.
 - **Live spectrum visualizer** and a **tab status** indicator in the popup
 - Double-click a slider to reset, scroll over it to fine-tune
 - All processing is local: no servers, no tracking
