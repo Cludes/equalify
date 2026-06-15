@@ -1,4 +1,10 @@
 'use strict';
+// Messaging a tab that has no content script (unsupported/loading page) rejects with
+// "Could not establish connection". It's harmless here - swallow those rejections globally.
+addEventListener('unhandledrejection', e => {
+  const m = String((e.reason && (e.reason.message || e.reason)) || '');
+  if (/establish connection|Receiving end does not exist|message port closed/i.test(m)) e.preventDefault();
+});
 const $ = id => document.getElementById(id);
 const BANDS = [60, 230, 910, 3600, 14000];
 const DEFAULTS = {
