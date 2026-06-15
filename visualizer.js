@@ -36,7 +36,7 @@ window.EqualifyViz = (function () {
     S.resize = resize; resize(); window.addEventListener('resize', resize);
 
     const flash = () => { S.hideAt = performance.now() + 2600; bar.style.opacity = '1'; title.style.opacity = '1'; overlay.style.cursor = 'default'; };
-    const setMode = m => { S.mode = (m + MODES.length) % MODES.length; title.textContent = 'Equalify  ·  ' + MODES[S.mode]; flash(); };
+    const setMode = m => { S.mode = (m + MODES.length) % MODES.length; title.textContent = 'CludesAmp  ·  ' + MODES[S.mode]; flash(); };
     const toggleAuto = () => { S.auto = !S.auto; bAuto.textContent = 'Auto: ' + (S.auto ? 'on' : 'off'); S.autoAt = performance.now() + 13000; flash(); };
     const toggleFull = () => { if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); else overlay.requestFullscreen().catch(() => {}); };
     const close = () => { S.running = false; cancelAnimationFrame(S.raf); window.removeEventListener('resize', resize); document.removeEventListener('keydown', key); overlay.remove(); if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); S = null; };

@@ -1,4 +1,4 @@
-# Equalify
+# CludesAmp
 
 A Manifest V3 Chrome extension that adds a real-time equalizer, bass boost, reverb, stereo width, 8D rotation, and speed/pitch presets (slowed + reverb, nightcore, lo-fi) to web audio.
 
