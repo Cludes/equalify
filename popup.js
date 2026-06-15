@@ -75,7 +75,10 @@ $('preset-save').addEventListener('click', () => {
 $('preset-name').addEventListener('keydown', e => { if (e.key === 'Enter') $('preset-save').click(); });
 
 // open full-screen visualizer in the page
-$('viz-open').addEventListener('click', () => { if (activeTabId != null) chrome.tabs.sendMessage(activeTabId, { type: 'visualizer' }); });
+$('viz-open').addEventListener('click', () => {
+  if (activeTabId == null) return;
+  chrome.tabs.sendMessage(activeTabId, { type: 'visualizer' }, () => void chrome.runtime.lastError);
+});
 
 // mini visualizer
 function drawViz(bars) {
@@ -101,7 +104,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
       if (resp.active) setStatus('ok', 'Active on ' + host);
       else if (resp.hasMedia) setStatus('warn', 'Ready - effects apply on play');
       else setStatus('warn', 'No audio found on this tab yet');
-      try { const port = chrome.tabs.connect(tab.id, { name: 'viz' }); port.onMessage.addListener(drawViz); } catch (e) {}
+      try { const port = chrome.tabs.connect(tab.id, { name: 'viz' }); port.onMessage.addListener(drawViz); port.onDisconnect.addListener(() => void chrome.runtime.lastError); } catch (e) {}
       finish();
     });
   });
