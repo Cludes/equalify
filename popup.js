@@ -77,7 +77,7 @@ $('preset-name').addEventListener('keydown', e => { if (e.key === 'Enter') $('pr
 // open full-screen visualizer in the page
 $('viz-open').addEventListener('click', () => {
   if (activeTabId == null) return;
-  chrome.tabs.sendMessage(activeTabId, { type: 'visualizer' }, () => void chrome.runtime.lastError);
+  Promise.resolve(chrome.tabs.sendMessage(activeTabId, { type: 'visualizer' })).catch(() => {});
 });
 
 // mini visualizer
@@ -98,14 +98,13 @@ chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
     store = { sites: {}, custom: [], ...(d.store || {}) };
     const finish = () => { s = { ...DEFAULTS, ...(store.sites[host] || {}) }; render(); renderCustom(); };
     if (!tab) { setStatus('bad', 'No active tab'); finish(); return; }
-    chrome.tabs.sendMessage(tab.id, { type: 'status' }, resp => {
-      if (chrome.runtime.lastError || !resp) { setStatus('bad', 'Not supported on this page'); host = 'default'; finish(); return; }
+    Promise.resolve(chrome.tabs.sendMessage(tab.id, { type: 'status' })).then(resp => {
+      if (!resp) { setStatus('bad', 'Not supported on this page'); host = 'default'; return; }
       host = resp.hostname;
       if (resp.active) setStatus('ok', 'Active on ' + host);
       else if (resp.hasMedia) setStatus('warn', 'Ready - effects apply on play');
       else setStatus('warn', 'No audio found on this tab yet');
       try { const port = chrome.tabs.connect(tab.id, { name: 'viz' }); port.onMessage.addListener(drawViz); port.onDisconnect.addListener(() => void chrome.runtime.lastError); } catch (e) {}
-      finish();
-    });
+    }).catch(() => { setStatus('bad', 'Not supported on this page'); host = 'default'; }).finally(finish);
   });
 });
