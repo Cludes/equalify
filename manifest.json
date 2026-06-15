@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "Equalify - EQ, bass boost & 8D for web audio",
+  "version": "0.1.0",
+  "description": "Real-time equalizer, bass boost, reverb, 8D, stereo width, slowed + reverb and nightcore for YouTube and other web audio.",
+  "permissions": ["storage"],
+  "host_permissions": [
+    "*://*.youtube.com/*",
+    "*://*.youtube-nocookie.com/*",
+    "*://*.soundcloud.com/*",
+    "*://*.bandcamp.com/*",
+    "*://open.spotify.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Equalify",
+    "default_icon": { "16": "icons/16.png", "48": "icons/48.png", "128": "icons/128.png" }
+  },
+  "icons": { "16": "icons/16.png", "48": "icons/48.png", "128": "icons/128.png" },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.youtube.com/*",
+        "*://*.youtube-nocookie.com/*",
+        "*://*.soundcloud.com/*",
+        "*://*.bandcamp.com/*",
+        "*://open.spotify.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ]
+}
