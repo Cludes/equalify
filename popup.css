@@ -19,7 +19,25 @@ header { display: flex; align-items: center; justify-content: space-between; mar
 .switch input:checked + .track { background: var(--grad); border-color: transparent; }
 .switch input:checked + .track::before { transform: translateX(18px); background: #fff; }
 
-.presets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 14px; }
+.status { display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--dim); margin-bottom: 10px; }
+.status .sdot { width: 8px; height: 8px; border-radius: 50%; background: var(--dim); flex-shrink: 0; }
+.status.ok .sdot { background: #34d399; box-shadow: 0 0 8px rgba(52,211,153,.7); }
+.status.warn .sdot { background: #fbbf24; }
+.status.bad .sdot { background: #f87171; }
+#viz { width: 100%; height: 44px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 12px; display: block; }
+.custom { margin-bottom: 12px; }
+.custom-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+.custom-chips:empty { display: none; }
+.chip { display: inline-flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 5px 6px 5px 11px; font-size: 11.5px; font-weight: 600; cursor: pointer; color: var(--text); }
+.chip:hover { border-color: var(--accent); }
+.chip .x { display: inline-flex; align-items: center; justify-content: center; width: 15px; height: 15px; border-radius: 50%; background: var(--surface2); color: var(--dim); font-size: 12px; line-height: 1; }
+.chip .x:hover { color: #f87171; }
+.custom-save { display: flex; gap: 6px; }
+.custom-save input { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 9px; color: var(--text); padding: 7px 10px; font-size: 12px; font-family: var(--font); outline: none; }
+.custom-save input:focus { border-color: var(--accent); }
+.custom-save button { background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 9px; padding: 0 14px; font-size: 12px; font-weight: 600; font-family: var(--font); cursor: pointer; }
+.custom-save button:hover { border-color: var(--accent); }
+.presets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 12px; }
 .preset { background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 9px; padding: 8px 6px; font-size: 11.5px; font-weight: 600; font-family: var(--font); cursor: pointer; transition: .15s; }
 .preset:hover { border-color: var(--accent); }
 .preset.on { background: var(--grad); border-color: transparent; color: #fff; }

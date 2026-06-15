@@ -10,12 +10,17 @@ A Manifest V3 Chrome extension that adds a real-time equalizer, bass boost, reve
 
 ## Features
 
+- Volume boost (up to 600%, with a compressor guarding against clipping)
 - Preamp, bass (low-shelf) and treble (high-shelf)
 - 5-band graphic EQ (60 / 230 / 910 / 3.6k / 14k Hz)
 - Reverb (synthesized impulse), stereo width (mid/side), 8D auto-rotation
-- Speed control (also shifts pitch - that's the slowed/nightcore effect)
+- Speed control, with an optional **keep-pitch** toggle (podcast speed vs nightcore pitch-shift)
 - One-click presets: Flat, Bass boost, Slowed + reverb, Nightcore, Lo-fi, 8D
-- Settings persist via `chrome.storage` and apply live across tabs
+- **Save your own custom presets**
+- **Per-site memory** - settings are remembered separately for each site
+- **Live spectrum visualizer** and a **tab status** indicator in the popup
+- Double-click a slider to reset, scroll over it to fine-tune
+- All processing is local: no servers, no tracking
 
 ## How it works
 
