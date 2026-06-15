@@ -9,9 +9,11 @@
   const BANDS = [60, 230, 910, 3600, 14000];
   const DEFAULTS = {
     enabled: true, preamp: 0, volume: 100, bass: 0, treble: 0, bands: [0, 0, 0, 0, 0],
-    reverb: 0, width: 100, eightD: false, eightDSpeed: 0.12, speed: 100, preservePitch: false
+    reverb: 0, width: 100, eightD: false, eightDSpeed: 0.12, speed: 100, preservePitch: false,
+    bassEnh: 0, clarity: 0, loudness: false
   };
   const NEUTRAL = { ...DEFAULTS };
+  const SAT = (() => { const n = 1024, c = new Float32Array(n); for (let i = 0; i < n; i++) { const x = i / (n - 1) * 2 - 1; c[i] = Math.tanh(x * 2.2); } return c; })();
   const HOST = location.hostname;
 
   let settings = { ...DEFAULTS };
@@ -47,7 +49,24 @@
     const convolver = ctx.createConvolver(); convolver.buffer = makeImpulse(ctx, 2.6);
     const dry = ctx.createGain(); dry.gain.value = 1;
     const wet = ctx.createGain(); wet.gain.value = 0;
-    const comp = ctx.createDynamicsCompressor();
+    const mixBus = ctx.createGain();
+
+    // psychoacoustic bass enhancer (parallel): harmonics of the low end
+    const beLP = ctx.createBiquadFilter(); beLP.type = 'lowpass'; beLP.frequency.value = 160; beLP.Q.value = 0.7;
+    const beShape = ctx.createWaveShaper(); beShape.curve = SAT; beShape.oversample = '2x';
+    const beHP = ctx.createBiquadFilter(); beHP.type = 'highpass'; beHP.frequency.value = 90;
+    const beGain = ctx.createGain(); beGain.gain.value = 0;
+    // clarity exciter (parallel): high harmonics for perceived detail
+    const ceHP = ctx.createBiquadFilter(); ceHP.type = 'highpass'; ceHP.frequency.value = 3500; ceHP.Q.value = 0.7;
+    const ceShape = ctx.createWaveShaper(); ceShape.curve = SAT; ceShape.oversample = '2x';
+    const ceGain = ctx.createGain(); ceGain.gain.value = 0;
+
+    // bypassable loudness stage + transparent safety limiter
+    const loudComp = ctx.createDynamicsCompressor(); loudComp.threshold.value = -28; loudComp.knee.value = 12; loudComp.ratio.value = 4; loudComp.attack.value = 0.01; loudComp.release.value = 0.25;
+    const loudMakeup = ctx.createGain(); loudMakeup.gain.value = 1.7;
+    const loudOn = ctx.createGain(); loudOn.gain.value = 0;
+    const loudOff = ctx.createGain(); loudOff.gain.value = 1;
+    const limiter = ctx.createDynamicsCompressor(); limiter.threshold.value = -1.5; limiter.knee.value = 0; limiter.ratio.value = 20; limiter.attack.value = 0.002; limiter.release.value = 0.08;
     const analyser = ctx.createAnalyser(); analyser.fftSize = 1024; analyser.smoothingTimeConstant = 0.8;
 
     src.connect(preamp); preamp.connect(bass); bass.connect(bands[0]);
@@ -60,10 +79,16 @@
     mid.connect(merger, 0, 0); sideW.connect(merger, 0, 0);
     mid.connect(merger, 0, 1); sideW.connect(sideNeg); sideNeg.connect(merger, 0, 1);
     merger.connect(panner);
+    treble.connect(beLP); beLP.connect(beShape); beShape.connect(beHP); beHP.connect(beGain); beGain.connect(panner);
+    treble.connect(ceHP); ceHP.connect(ceShape); ceShape.connect(ceGain); ceGain.connect(panner);
     panner.connect(dry); panner.connect(convolver); convolver.connect(wet);
-    dry.connect(comp); wet.connect(comp); comp.connect(analyser); comp.connect(ctx.destination);
+    dry.connect(mixBus); wet.connect(mixBus);
+    mixBus.connect(loudOff);
+    mixBus.connect(loudComp); loudComp.connect(loudMakeup); loudMakeup.connect(loudOn);
+    loudOff.connect(limiter); loudOn.connect(limiter);
+    limiter.connect(analyser); limiter.connect(ctx.destination);
 
-    return { ctx, preamp, bass, treble, bands, sideW, panner, lfo, lfoDepth, wet, dry, analyser };
+    return { ctx, preamp, bass, treble, bands, sideW, panner, lfo, lfoDepth, wet, dry, beGain, ceGain, loudOn, loudOff, analyser };
   }
 
   function applyPitch() {
@@ -88,6 +113,10 @@
     if (!s.eightD) g.panner.pan.setTargetAtTime(0, t, 0.05);
     const rv = (s.reverb / 100) * 0.9;
     g.wet.gain.setTargetAtTime(rv, t, 0.05); g.dry.gain.setTargetAtTime(1 - rv * 0.4, t, 0.05);
+    g.beGain.gain.setTargetAtTime((s.bassEnh / 100) * 0.85, t, 0.05);
+    g.ceGain.gain.setTargetAtTime((s.clarity / 100) * 0.5, t, 0.05);
+    const loud = s.loudness ? 1 : 0;
+    g.loudOn.gain.setTargetAtTime(loud, t, 0.05); g.loudOff.gain.setTargetAtTime(1 - loud, t, 0.05);
     if (g.ctx.state === 'suspended') g.ctx.resume();
   }
 

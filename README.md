@@ -10,7 +10,8 @@ A Manifest V3 Chrome extension that adds a real-time equalizer, bass boost, reve
 
 ## Features
 
-- Volume boost (up to 600%, with a compressor guarding against clipping)
+- Volume boost (up to 600%) with a transparent peak limiter that keeps boosts clean (and leaves Flat untouched)
+- Psychoacoustic bass enhancer (deeper-sounding bass on small speakers), clarity exciter, and an optional loudness mode
 - Preamp, bass (low-shelf) and treble (high-shelf)
 - 5-band graphic EQ (60 / 230 / 910 / 3.6k / 14k Hz)
 - Reverb (synthesized impulse), stereo width (mid/side), 8D auto-rotation

@@ -3,17 +3,18 @@ const $ = id => document.getElementById(id);
 const BANDS = [60, 230, 910, 3600, 14000];
 const DEFAULTS = {
   enabled: true, preamp: 0, volume: 100, bass: 0, treble: 0, bands: [0, 0, 0, 0, 0],
-  reverb: 0, width: 100, eightD: false, eightDSpeed: 0.12, speed: 100, preservePitch: false
+  reverb: 0, width: 100, eightD: false, eightDSpeed: 0.12, speed: 100, preservePitch: false,
+  bassEnh: 0, clarity: 0, loudness: false
 };
 const PRESETS = {
   flat: { preamp: 0, volume: 100, bass: 0, treble: 0, bands: [0, 0, 0, 0, 0], reverb: 0, width: 100, eightD: false, speed: 100, preservePitch: false },
-  bass: { preamp: -1, bass: 11, treble: 1, bands: [9, 5, 0, 0, 1], reverb: 0, width: 110, eightD: false, speed: 100 },
+  bass: { preamp: -1, bass: 11, treble: 1, bands: [9, 5, 0, 0, 1], reverb: 0, width: 110, eightD: false, speed: 100, bassEnh: 35 },
   slowed: { bass: 4, treble: -1, bands: [3, 2, 0, -1, -2], reverb: 55, width: 130, eightD: false, speed: 85, preservePitch: false },
   nightcore: { preamp: -1, treble: 4, bands: [0, 0, 1, 3, 5], reverb: 10, width: 110, eightD: false, speed: 128, preservePitch: false },
   lofi: { bass: 5, treble: -8, bands: [4, 2, -2, -6, -10], reverb: 30, width: 90, eightD: false, speed: 96 },
   eightd: { bass: 3, treble: 1, bands: [2, 0, 0, 1, 2], reverb: 35, width: 140, eightD: true, eightDSpeed: 0.12, speed: 100 }
 };
-const SLIDERS = { volume: '%', preamp: ' dB', bass: ' dB', treble: ' dB', reverb: '%', width: '%', speed: '%' };
+const SLIDERS = { volume: '%', preamp: ' dB', bass: ' dB', treble: ' dB', bassEnh: '%', clarity: '%', reverb: '%', width: '%', speed: '%' };
 
 let store = { sites: {}, custom: [] };
 let host = 'default';
@@ -26,6 +27,7 @@ function render() {
   $('enabled').checked = s.enabled;
   for (const id in SLIDERS) { $(id).value = s[id]; $('v-' + id).textContent = s[id] + SLIDERS[id]; }
   $('preservePitch').checked = s.preservePitch;
+  $('loudness').checked = s.loudness;
   $('eightD').checked = s.eightD; $('eightDSpeed').value = s.eightDSpeed;
   document.querySelectorAll('.band input').forEach((el, i) => { el.value = s.bands[i]; el.nextElementSibling.textContent = (s.bands[i] > 0 ? '+' : '') + s.bands[i]; });
 }
@@ -43,6 +45,7 @@ function clearPreset() { document.querySelectorAll('.preset').forEach(b => b.cla
 for (const id in SLIDERS) $(id).addEventListener('input', () => { s[id] = +$(id).value; $('v-' + id).textContent = $(id).value + SLIDERS[id]; clearPreset(); persist(); });
 $('enabled').addEventListener('change', () => { s.enabled = $('enabled').checked; persist(); });
 $('preservePitch').addEventListener('change', () => { s.preservePitch = $('preservePitch').checked; persist(); });
+$('loudness').addEventListener('change', () => { s.loudness = $('loudness').checked; clearPreset(); persist(); });
 $('eightD').addEventListener('change', () => { s.eightD = $('eightD').checked; clearPreset(); persist(); });
 $('eightDSpeed').addEventListener('input', () => { s.eightDSpeed = +$('eightDSpeed').value; persist(); });
 

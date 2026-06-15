@@ -6,7 +6,7 @@
   --font: 'Inter', system-ui, sans-serif; --display: 'Space Grotesk', sans-serif;
 }
 * { box-sizing: border-box; margin: 0; }
-body { width: 600px; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 13px; padding: 11px 14px; }
+body { width: 600px; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 13px; padding: 9px 14px; }
 header { display: flex; align-items: center; gap: 14px; margin-bottom: 9px; }
 .brand { flex-shrink: 0; font-family: var(--display); font-weight: 700; font-size: 17px; display: flex; align-items: center; gap: 8px; letter-spacing: -0.3px; }
 .cols { display: flex; gap: 12px; align-items: stretch; }
@@ -30,7 +30,7 @@ header { display: flex; align-items: center; gap: 14px; margin-bottom: 9px; }
 .status.bad .sdot { background: #f87171; }
 .viz-wrap { position: relative; cursor: pointer; margin-bottom: 12px; }
 .viz-wrap:hover { filter: brightness(1.15); }
-#viz { width: 100%; height: 46px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; display: block; }
+#viz { width: 100%; height: 38px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; display: block; }
 .viz-wrap:hover #viz { border-color: var(--accent); }
 .viz-exp { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 10px; letter-spacing: .5px; color: var(--dim); pointer-events: none; background: rgba(10,11,15,0.55); padding: 2px 7px; border-radius: 10px; }
 .custom { margin-bottom: 12px; }
@@ -50,8 +50,8 @@ header { display: flex; align-items: center; gap: 14px; margin-bottom: 9px; }
 .preset:hover { border-color: var(--accent); }
 .preset.on { background: var(--grad); border-color: transparent; color: #fff; }
 
-.group { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 11px 13px; margin-bottom: 10px; }
-.ctrl { margin: 9px 0; }
+.group { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 9px 13px; margin-bottom: 10px; }
+.ctrl { margin: 4px 0; }
 .ctrl:first-child { margin-top: 2px; } .ctrl:last-child { margin-bottom: 2px; }
 .ctrl label { display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; color: var(--dim); margin-bottom: 5px; text-transform: uppercase; letter-spacing: .4px; }
 .ctrl label b { color: var(--accent2); font-family: var(--display); font-size: 12px; }

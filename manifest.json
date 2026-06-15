@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Equalify - EQ, bass boost & 8D for web audio",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Real-time equalizer, bass boost, reverb, 8D, stereo width, slowed + reverb and nightcore for YouTube and other web audio.",
   "permissions": ["storage"],
   "host_permissions": [
